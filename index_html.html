@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --black: #0a0a0a; --white: #f5f2ee; --accent: #e8462a; --mid: #1a1a1a; --border: rgba(245,242,238,0.1); }
+  body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.6; }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 3rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(8px); z-index: 100; }
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.08em; color: var(--white); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav ul a { color: rgba(245,242,238,0.55); text-decoration: none; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+  nav ul a:hover { color: var(--white); }
+  .nav-cta { border: 1px solid var(--accent) !important; color: var(--accent) !important; padding: 0.5rem 1.2rem; border-radius: 2px; }
+
+  .hero { padding: 6rem 3rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; border-bottom: 1px solid var(--border); }
+  .tag { display: inline-block; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; border-radius: 2px; margin-bottom: 1.5rem; }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 7vw, 6rem); line-height: 0.92; letter-spacing: 0.02em; margin-bottom: 1.2rem; }
+  h1 em { color: var(--accent); font-style: normal; display: block; }
+  .hero-desc { font-size: 0.92rem; color: rgba(245,242,238,0.55); max-width: 400px; line-height: 1.8; margin-bottom: 1.8rem; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; background: var(--accent); color: var(--black); font-weight: 500; padding: 0.8rem 1.8rem; border: none; border-radius: 2px; cursor: pointer; text-decoration: none; display: inline-block; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; background: transparent; color: var(--white); padding: 0.8rem 1.8rem; border: 1px solid var(--border); border-radius: 2px; cursor: pointer; text-decoration: none; display: inline-block; }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .stat { padding: 1.4rem 1.6rem; background: var(--mid); text-align: center; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--white); letter-spacing: 0.04em; line-height: 1; }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,242,238,0.4); margin-top: 0.3rem; }
+
+  .section { padding: 4.5rem 3rem; border-bottom: 1px solid var(--border); }
+  .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2.5rem; }
+  h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; letter-spacing: 0.04em; line-height: 1; }
+
+  /* DRIVE SHOWCASE */
+  .drive-showcase { background: var(--mid); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .drive-banner { background: linear-gradient(135deg, #1a0808 0%, #2d1008 50%, #1a0a0a 100%); padding: 4rem 3rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; min-height: 280px; }
+  .drive-banner::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(232,70,42,0.03) 40px, rgba(232,70,42,0.03) 80px); }
+  .play-big { width: 80px; height: 80px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; position: relative; z-index: 1; cursor: pointer; transition: transform 0.2s, opacity 0.2s; }
+  .play-big:hover { transform: scale(1.08); opacity: 0.9; }
+  .play-big svg { width: 28px; height: 28px; fill: white; margin-left: 5px; }
+  .drive-banner h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.06em; margin-bottom: 0.6rem; position: relative; z-index: 1; }
+  .drive-banner p { font-size: 0.85rem; color: rgba(245,242,238,0.45); max-width: 360px; line-height: 1.7; position: relative; z-index: 1; margin-bottom: 2rem; }
+  .drive-open-btn { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; background: var(--accent); color: var(--black); font-weight: 500; padding: 0.85rem 2rem; border-radius: 2px; text-decoration: none; position: relative; z-index: 1; transition: opacity 0.2s; }
+  .drive-open-btn:hover { opacity: 0.85; }
+  .drive-open-btn svg { width: 14px; height: 14px; fill: var(--black); }
+
+  .drive-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border-top: 1px solid var(--border); }
+  .drive-meta-item { background: var(--mid); padding: 1.2rem 1.5rem; text-align: center; }
+  .drive-meta-item .label { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(245,242,238,0.35); margin-bottom: 0.4rem; }
+  .drive-meta-item .value { font-size: 0.88rem; font-weight: 500; color: var(--white); }
+
+  /* VIDEO PREVIEWS - clickable cards */
+  .preview-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border-top: 1px solid var(--border); }
+  .preview-card { background: #111; cursor: pointer; position: relative; overflow: hidden; text-decoration: none; display: block; }
+  .preview-card:hover .preview-overlay { opacity: 1; }
+  .preview-thumb { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; position: relative; }
+  .preview-card:nth-child(1) .preview-thumb { background: linear-gradient(135deg, #200808, #4a1010); }
+  .preview-card:nth-child(2) .preview-thumb { background: linear-gradient(135deg, #08081a, #10103a); }
+  .preview-card:nth-child(3) .preview-thumb { background: linear-gradient(135deg, #081508, #103010); }
+  .preview-overlay { position: absolute; inset: 0; background: rgba(232,70,42,0.15); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+  .mini-play { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; }
+  .mini-play svg { width: 12px; height: 12px; fill: white; margin-left: 2px; }
+  .preview-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,242,238,0.25); }
+  .preview-info { padding: 0.8rem 1rem; border-top: 1px solid var(--border); }
+  .preview-info p { font-size: 0.75rem; color: rgba(245,242,238,0.5); }
+  .preview-badge { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.2rem; }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .skill-card { background: var(--mid); padding: 1.8rem 2rem; }
+  .skill-name { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.8rem; }
+  .skill-bar-bg { height: 3px; background: rgba(245,242,238,0.08); border-radius: 2px; }
+  .skill-bar { height: 100%; background: var(--accent); border-radius: 2px; }
+  .tools-row { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .tool-pill { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 0.9rem; border: 1px solid var(--border); border-radius: 100px; color: rgba(245,242,238,0.55); }
+  .tool-pill.featured { border-color: rgba(232,70,42,0.5); color: var(--accent); }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .about-card { background: var(--mid); padding: 2rem; }
+  .about-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 1.2rem; }
+  .timeline-item { display: flex; gap: 1rem; margin-bottom: 1.1rem; }
+  .tdot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 0.45rem; flex-shrink: 0; }
+  .timeline-content p { font-size: 0.82rem; font-weight: 500; }
+  .timeline-content span { font-size: 0.72rem; color: rgba(245,242,238,0.4); }
+
+  /* CONTACT */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .contact-links { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+  .contact-link { display: flex; align-items: center; gap: 0.8rem; font-size: 0.82rem; color: rgba(245,242,238,0.55); text-decoration: none; transition: color 0.2s; }
+  .contact-link:hover { color: var(--white); }
+  .cdot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .contact-form { background: var(--mid); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
+  .form-field { margin-bottom: 1.1rem; }
+  .form-field label { display: block; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(245,242,238,0.4); margin-bottom: 0.45rem; }
+  .form-field input, .form-field textarea, .form-field select { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 2px; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; padding: 0.65rem 0.85rem; outline: none; resize: none; appearance: none; }
+  .form-field input:focus, .form-field textarea:focus { border-color: rgba(232,70,42,0.4); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-field select option { background: #1a1a1a; }
+
+  footer { padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); }
+  footer p { font-size: 0.72rem; color: rgba(245,242,238,0.3); letter-spacing: 0.06em; }
+  .footer-links { display: flex; gap: 1.8rem; }
+  .footer-links a { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,242,238,0.3); text-decoration: none; }
+  .footer-links a:hover { color: var(--white); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero, .section { animation: fadeUp 0.6s ease both; }
+
+  /* OPTION A */
+  .work-section-a { padding: 4.5rem 3rem; border-bottom: 1px solid var(--border); }
+  .work-section-a .section-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:2.5rem; }
+  .cat-label { font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--accent); margin-bottom:0.8rem; display:flex; align-items:center; gap:10px; }
+  .cat-label::before { content:''; width:24px; height:1px; background:var(--accent); }
+  .cat-block { margin-bottom:3rem; }
+  .vid-grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+  .vid-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .vid-grid-1 { display:grid; grid-template-columns:1fr; gap:2px; }
+  .vid-card-a { background:#0d0d10; border:1px solid var(--border); overflow:hidden; position:relative; display:block; text-decoration:none; cursor:pointer; transition:border-color .3s, transform .3s; }
+  .vid-card-a:hover { border-color:var(--accent); transform:translateY(-3px); }
+  .vid-thumb-a { position:relative; overflow:hidden; background:#111; }
+  .vid-thumb-a.reel { aspect-ratio:9/16; }
+  .vid-thumb-a.wide { aspect-ratio:16/9; }
+  .vid-thumb-a img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease; filter:brightness(.9) contrast(1.05); }
+  .vid-card-a:hover .vid-thumb-a img { transform:scale(1.06); }
+  .vid-overlay-a { position:absolute; inset:0; background:linear-gradient(to top, rgba(6,6,8,.85) 0%, transparent 50%); opacity:0; transition:opacity .3s; display:flex; align-items:center; justify-content:center; }
+  .vid-card-a:hover .vid-overlay-a { opacity:1; }
+  .play-circle { width:52px; height:52px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; }
+  .play-circle svg { width:18px; height:18px; fill:white; margin-left:4px; }
+  .vid-badge-a { position:absolute; top:8px; left:8px; font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; background:rgba(6,6,8,.82); color:var(--accent); padding:3px 9px; backdrop-filter:blur(4px); }
+  .vid-info-a { padding:.9rem 1rem; border-top:1px solid var(--border); }
+  .vid-title-a { font-size:.82rem; font-weight:500; color:rgba(245,242,238,.9); margin-bottom:2px; }
+  .vid-sub-a { font-size:.7rem; color:rgba(245,242,238,.35); }
+  .img-error { width:100%; height:100%; object-fit:cover; }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#">KASARAM<span>.</span></a>
+  <ul>
+    <li><a href="#">Work</a></li>
+    <li><a href="#">Skills</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="mailto:kasaramsekhar8@gmail.com" class="nav-cta">Hire me</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div>
+    <span class="tag">Video Editor</span>
+    <h1>Kasaram<br><em>Sekhar</em></h1>
+    <p class="hero-desc">Crafting compelling visual stories through precise editing. Skilled in Adobe Premiere Pro, After Effects, Photoshop and CapCut. Based in Tirupati, Andhra Pradesh.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="https://drive.google.com/drive/folders/1jk0LRqmUP1mjlpVnk1rlYbpVYAgPnc4D?usp=sharing" target="_blank">Watch My Work ↗</a>
+      <a class="btn-secondary" href="mailto:kasaramsekhar8@gmail.com">Get in Touch</a>
+    </div>
+  </div>
+  <div>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">1<span>+</span></div><div class="stat-label">Yr Experience</div></div>
+      <div class="stat"><div class="stat-num">4<span>+</span></div><div class="stat-label">Tools</div></div>
+      <div class="stat"><div class="stat-num">1<span>+</span></div><div class="stat-label">Certifications</div></div>
+      <div class="stat"><div class="stat-num">8<span>.0</span></div><div class="stat-label">GPA</div></div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- ═══ WORK SECTION — OPTION A (Real Drive Thumbnails) ═══ -->
+<section class="work-section-a" id="work">
+  <div class="section-header">
+    <h2>My Work</h2>
+    <a href="https://drive.google.com/drive/folders/1jk0LRqmUP1mjlpVnk1rlYbpVYAgPnc4D?usp=sharing" target="_blank" style="font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);text-decoration:none;">View all ↗</a>
+  </div>
+
+  <!-- REELS -->
+
+  <div class="cat-block">
+    <div class="cat-label">Reels · Short Form</div>
+    <div class="vid-grid-4">
+
+      <a class="vid-card-a" href="https://drive.google.com/file/d/1C7ArbNnMOMpl7wp9wBzIFwbbkmOs7Iko/view" target="_blank">
+        <div class="vid-thumb-a reel">
+          <img src="https://drive.google.com/thumbnail?id=1C7ArbNnMOMpl7wp9wBzIFwbbkmOs7Iko&sz=w400" alt="Reel Edit 01">
+          <span class="vid-badge-a">Reels</span>
+          <div class="vid-overlay-a"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-info-a"><div class="vid-title-a">Reel Edit 01</div><div class="vid-sub-a">Click to watch ↗</div></div>
+      </a>
+      <a class="vid-card-a" href="https://drive.google.com/file/d/17LDJn5Ky8zqf_AuHHsyN0pBjzF9vBBjJ/view" target="_blank">
+        <div class="vid-thumb-a reel">
+          <img src="https://drive.google.com/thumbnail?id=17LDJn5Ky8zqf_AuHHsyN0pBjzF9vBBjJ&sz=w400" alt="Reel Edit 02">
+          <span class="vid-badge-a">Reels</span>
+          <div class="vid-overlay-a"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-info-a"><div class="vid-title-a">Reel Edit 02</div><div class="vid-sub-a">Click to watch ↗</div></div>
+      </a>
+      <a class="vid-card-a" href="https://drive.google.com/file/d/1woPTiYhwp0jB-QpLIItQV6tH1fLH8dJ6/view" target="_blank">
+        <div class="vid-thumb-a reel">
+          <img src="https://drive.google.com/thumbnail?id=1woPTiYhwp0jB-QpLIItQV6tH1fLH8dJ6&sz=w400" alt="Reel Edit 03">
+          <span class="vid-badge-a">Reels</span>
+          <div class="vid-overlay-a"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-info-a"><div class="vid-title-a">Reel Edit 03</div><div class="vid-sub-a">Click to watch ↗</div></div>
+      </a>
+      <a class="vid-card-a" href="https://drive.google.com/file/d/1u6BZ7rvzssGN-Z7H39YANpTU9rgkPcpk/view" target="_blank">
+        <div class="vid-thumb-a reel">
+          <img src="https://drive.google.com/thumbnail?id=1u6BZ7rvzssGN-Z7H39YANpTU9rgkPcpk&sz=w400" alt="Reel Edit 04">
+          <span class="vid-badge-a">Reels</span>
+          <div class="vid-overlay-a"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-info-a"><div class="vid-title-a">Reel Edit 04</div><div class="vid-sub-a">Click to watch ↗</div></div>
+      </a>
+      <a class="vid-card-a" href="https://drive.google.com/file/d/1uzvf5ZVKxgJ-bY4AkGzLHJBe-8vYJA5O/view" target="_blank">
+        <div class="vid-thumb-a reel">
+          <img src="https://drive.google.com/thumbnail?id=1uzvf5ZVKxgJ-bY4AkGzLHJBe-8vYJA5O&sz=w400" alt="Reel Edit 05">
+          <span class="vid-badge-a">Reels</span>
+          <div class="vid-overlay-a"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-info-a"><div class="vid-title-a">Reel Edit 05</div><div class="vid-sub-a">Click to watch ↗</div></div>
+      </a>
+      <a class="vid-card-a" href="https://drive.google.com/file/d/1ArszorS0dxZd3b6pY8ipcalgZTBNZrl1/view" target="_blank">
+        <div class="vid-thumb-a reel">
+          <img src="https://drive.google.com/thumbnail?id=1ArszorS0dxZd3b6pY8ipcalgZTBNZrl1&sz=w400" alt="Reel Edit 06">
+          <span class="vid-badge-a">Reels</span>
+          <div class="vid-overlay-a"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-info-a"><div class="vid-title-a">Reel Edit 06</div><div class="vid-sub-a">Click to watch ↗</div></div>
+      </a>
+<a class="vid-card-a" href="https://drive.google.com/file/d/1LQ9nuusYByKwpPAlg1Nk4GtfFmDCZM8A/view?usp=drive_link" target="_blank">
+<div class="vid-thumb-a reel"><img src="https://drive.google.com/thumbnail?id=1LQ9nuusYByKwpPAlg1Nk4GtfFmDCZM8A&sz=w400"><span class="vid-badge-a">Reels</span></div>
+<div class="vid-info-a"><div class="vid-title-a">Reel Edit 07</div></div></a>
+
+<a class="vid-card-a" href="https://drive.google.com/file/d/17vZjtTY_qCbXNq_E5ficQ8eZvX86kKHn/view?usp=drive_link" target="_blank">
+<div class="vid-thumb-a reel"><img src="https://drive.google.com/thumbnail?id=17vZjtTY_qCbXNq_E5ficQ8eZvX86kKHn&sz=w400"><span class="vid-badge-a">Reels</span></div>
+<div class="vid-info-a"><div class="vid-title-a">Reel Edit 08</div></div></a>
+</div></div>
+
+  <!-- ADS + ANIMATION + TRAILER in a row -->
+  <div class="cat-block">
+    
+<div class="cat-label">Ads · Animation · Trailer</div>
+    <div class="vid-grid-3">
+      <a class="vid-card-a" href="https://drive.google.com/file/d/1foLF7XY8BNIgmKsb8zu9lwp6uAZx-XA8/view" target="_blank"><div class="vid-thumb-a wide"><img src="https://drive.google.com/thumbnail?id=1foLF7XY8BNIgmKsb8zu9lwp6uAZx-XA8&sz=w600"><span class="vid-badge-a">Ads</span></div><div class="vid-info-a"><div class="vid-title-a">Ads Reel 01</div></div></a>
+      <a class="vid-card-a" href="https://drive.google.com/file/d/1RCxbYdeWjOuxVhIi926l6FVQS5CNleua/view" target="_blank"><div class="vid-thumb-a wide"><img src="https://drive.google.com/thumbnail?id=1RCxbYdeWjOuxVhIi926l6FVQS5CNleua&sz=w600"><span class="vid-badge-a">Ads</span></div><div class="vid-info-a"><div class="vid-title-a">Ads Reel 02</div></div></a>
+      
+    </div>
+  </div>
+
+  
+
+<div class="cat-block">
+<div class="cat-label">Animation</div>
+<div class="vid-grid-3">
+<a class="vid-card-a" href="https://drive.google.com/file/d/19lDOZkYo2RBeEeapPSxT33prVvBUXHnY/view?usp=drive_link" target="_blank"><div class="vid-thumb-a wide"><img src="https://drive.google.com/thumbnail?id=19lDOZkYo2RBeEeapPSxT33prVvBUXHnY&sz=w600"><span class="vid-badge-a">Animation</span></div></a>
+<a class="vid-card-a" href="https://drive.google.com/file/d/14aOQSux-npmqTHud1jBEsmhXE6lOCIfp/view?usp=drive_link" target="_blank"><div class="vid-thumb-a wide"><img src="https://drive.google.com/thumbnail?id=14aOQSux-npmqTHud1jBEsmhXE6lOCIfp&sz=w600"><span class="vid-badge-a">Animation</span></div></a>
+<a class="vid-card-a" href="https://drive.google.com/file/d/1VkKdq87snj7IbWSwiaF53SlZ14QiwDJJ/view?usp=drive_link" target="_blank"><div class="vid-thumb-a wide"><img src="https://drive.google.com/thumbnail?id=1VkKdq87snj7IbWSwiaF53SlZ14QiwDJJ&sz=w600"><span class="vid-badge-a">Animation</span></div></a>
+</div>
+</div>
+
+<div class="cat-block">
+<div class="cat-label">Trailer Cuts</div>
+<div class="vid-grid-1">
+<a class="vid-card-a" href="https://drive.google.com/file/d/12dzm-8BqULybQzRwzPb4ZBL14Xz5m8v6/view?usp=drive_link" target="_blank">
+<div class="vid-thumb-a wide"><img src="https://drive.google.com/thumbnail?id=12dzm-8BqULybQzRwzPb4ZBL14Xz5m8v6&sz=w800"><span class="vid-badge-a">Trailer</span></div></a>
+</div>
+</div>
+
+
+<!-- YOUTUBE -->
+  <div class="cat-block" style="margin-bottom:0;">
+    <div class="cat-label">YouTube · Long Form</div>
+    <div class="vid-grid-3">
+
+      <a class="vid-card-a" href="https://drive.google.com/file/d/1_eFbbmgMJAgqoSanUzJ5N0tRkEb8tQ4X/view?usp=drive_link" target="_blank">
+      <div class="vid-thumb-a wide">
+      <img src="https://drive.google.com/thumbnail?id=1_eFbbmgMJAgqoSanUzJ5N0tRkEb8tQ4X&sz=w800">
+      <span class="vid-badge-a">YouTube</span></div>
+      <div class="vid-info-a"><div class="vid-title-a">YouTube Video 01</div></div></a>
+
+      <a class="vid-card-a" href="https://drive.google.com/file/d/1-I0ZZEAsyYIJTCxOY5yWHcnLqfqntw9M/view?usp=drive_link" target="_blank">
+      <div class="vid-thumb-a wide">
+      <img src="https://drive.google.com/thumbnail?id=1-I0ZZEAsyYIJTCxOY5yWHcnLqfqntw9M&sz=w800">
+      <span class="vid-badge-a">YouTube</span></div>
+      <div class="vid-info-a"><div class="vid-title-a">YouTube Video 02</div></div></a>
+
+    </div>
+  </div>
+
+  <!-- REAL ESTATE -->
+  <div class="cat-block" style="margin-bottom:0;">
+    <div class="cat-label">Real Estate</div>
+    <div class="vid-grid-3">
+
+      <a class="vid-card-a" href="https://drive.google.com/file/d/1x3WcRlRsFZwS3KSVTtY4XyrYBku8-nEj/view?usp=sharing" target="_blank">
+      <div class="vid-thumb-a wide">
+      <img src="https://drive.google.com/thumbnail?id=1x3WcRlRsFZwS3KSVTtY4XyrYBku8-nEj&sz=w800">
+      <span class="vid-badge-a">Real Estate</span></div>
+      <div class="vid-info-a"><div class="vid-title-a">Real Estate Video 01</div></div></a>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- SKILLS -->
+<section class="section">
+  <div class="section-header"><h2>Skills</h2></div>
+  <div class="skills-grid">
+    <div class="skill-card"><div class="skill-name">Adobe Premiere Pro</div><div class="skill-bar-bg"><div class="skill-bar" style="width:90%"></div></div></div>
+    <div class="skill-card"><div class="skill-name">Adobe After Effects</div><div class="skill-bar-bg"><div class="skill-bar" style="width:80%"></div></div></div>
+    <div class="skill-card"><div class="skill-name">Adobe Photoshop</div><div class="skill-bar-bg"><div class="skill-bar" style="width:75%"></div></div></div>
+    <div class="skill-card"><div class="skill-name">CapCut</div><div class="skill-bar-bg"><div class="skill-bar" style="width:85%"></div></div></div>
+  </div>
+  <div>
+    <p style="font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(245,242,238,0.3);margin-top:2rem;margin-bottom:0.8rem;">Tools & Software</p>
+    <div class="tools-row">
+      <span class="tool-pill featured">Adobe Premiere Pro</span>
+      <span class="tool-pill featured">After Effects</span>
+      <span class="tool-pill featured">CapCut</span>
+      <span class="tool-pill">Adobe Photoshop</span>
+      <span class="tool-pill">Color Grading</span>
+      <span class="tool-pill">Motion Graphics</span>
+      <span class="tool-pill">Reels Editing</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section">
+  <div class="section-header"><h2>About Me</h2></div>
+  <div class="about-grid">
+    <div class="about-card">
+      <h3>Experience & Certifications</h3>
+      <div class="timeline-item"><div class="tdot"></div><div class="timeline-content"><p>Video Editing — Growth School</p><span>Jan 2026 – Jun 2026</span></div></div>
+      <div class="timeline-item"><div class="tdot"></div><div class="timeline-content"><p>Video Editing Certificate — Garuda Productions</p><span>Certified Editor</span></div></div>
+    </div>
+    <div class="about-card">
+      <h3>Education</h3>
+      <div class="timeline-item"><div class="tdot"></div><div class="timeline-content"><p>Graduation — A.P Residential Degree College</p><span>2022 – 2024 · GPA 8.0</span></div></div>
+      <div class="timeline-item"><div class="tdot"></div><div class="timeline-content"><p>Intermediate — Amaravathi Jr College</p><span>2020 – 2022 · 873 marks</span></div></div>
+      <div class="timeline-item"><div class="tdot"></div><div class="timeline-content"><p>SSC — Z.P High School Vallivedu</p><span>2010 – 2020 · GPA 7.8</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section">
+  <div class="contact-grid">
+    <div>
+      <h2>Let's Work<br>Together</h2>
+      <p style="color:rgba(245,242,238,0.5);font-size:0.88rem;margin-top:1rem;max-width:320px;line-height:1.8;">Open to freelance projects, collaborations and full-time opportunities. Let's create something great.</p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:kasaramsekhar8@gmail.com"><span class="cdot"></span>kasaramsekhar8@gmail.com</a>
+        <a class="contact-link" href="tel:8143736324"><span class="cdot"></span>+91 8143736324</a>
+        <a class="contact-link" href="https://www.linkedin.com/in/kasaram-sekhar-2ab425281" target="_blank"><span class="cdot"></span>LinkedIn Profile</a>
+        <a class="contact-link" href="https://drive.google.com/drive/folders/1jk0LRqmUP1mjlpVnk1rlYbpVYAgPnc4D?usp=sharing" target="_blank"><span class="cdot"></span>Watch My Work on Drive</a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-field"><label>Name</label><input type="text" placeholder="Your name"></div>
+        <div class="form-field"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+      </div>
+      <div class="form-field">
+        <label>Project type</label>
+        <select><option>Select a service</option><option>Video Editing</option><option>Motion Graphics</option><option>Color Grading</option><option>Reels / Short-form</option><option>Other</option></select>
+      </div>
+      <div class="form-field"><label>Message</label><textarea rows="4" placeholder="Tell me about your project..."></textarea></div>
+      <button class="btn-primary" style="width:100%;padding:0.85rem;font-size:0.78rem;">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Kasaram Sekhar · Video Editor</p>
+  <div class="footer-links">
+    <a href="https://drive.google.com/drive/folders/1jk0LRqmUP1mjlpVnk1rlYbpVYAgPnc4D?usp=sharing" target="_blank">My Work</a>
+    <a href="https://www.linkedin.com/in/kasaram-sekhar-2ab425281" target="_blank">LinkedIn</a>
+    <a href="mailto:kasaramsekhar8@gmail.com">Email</a>
+  </div>
+</footer>
+
+</body>
+</html>
